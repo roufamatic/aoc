@@ -1,13 +1,13 @@
 def run(data):
   besttotal=0
-  for _,val in enumerate(data.split('\n\n')):
+  for val in data.split('\n\n'):
     total = sum(int(v) for v in val.split('\n'))
     if total > besttotal:
       besttotal = total
   print(besttotal)
 
   besttotals=[]
-  for _,val in enumerate(data.split('\n\n')):
+  for val in data.split('\n\n'):
     total = sum(int(v) for v in val.split('\n'))
     besttotals.append(total)
 
