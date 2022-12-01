@@ -1,10 +1,4 @@
 def run(data):
-  besttotal=0
-  for val in data.split('\n\n'):
-    total = sum(int(v) for v in val.split('\n'))
-    if total > besttotal:
-      besttotal = total
-  print(besttotal)
 
   besttotals=[]
   for val in data.split('\n\n'):
@@ -14,6 +8,7 @@ def run(data):
   besttotals = sorted(besttotals)
   besttotals.reverse()
 
+  print(besttotals[0])
   print(sum(besttotals[:3]))
 
 
