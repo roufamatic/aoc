@@ -1,3 +1,22 @@
+def run(data):
+  besttotal=0
+  for _,val in enumerate(data.split('\n\n')):
+    total = sum(int(v) for v in val.split('\n'))
+    if total > besttotal:
+      besttotal = total
+  print(besttotal)
+
+  besttotals=[]
+  for _,val in enumerate(data.split('\n\n')):
+    total = sum(int(v) for v in val.split('\n'))
+    besttotals.append(total)
+
+  besttotals = sorted(besttotals)
+  besttotals.reverse()
+
+  print(sum(besttotals[:3]))
+
+
 data = '''22243
 11899
 
@@ -2257,21 +2276,4 @@ data = '''22243
 3253
 2123
 4825'''
-
-
-besttotal=0
-for _,val in enumerate(data.split('\n\n')):
-  total = sum(int(v) for v in val.split('\n'))
-  if total > besttotal:
-    besttotal = total
-print(besttotal)
-
-besttotals=[]
-for _,val in enumerate(data.split('\n\n')):
-  total = sum(int(v) for v in val.split('\n'))
-  besttotals.append(total)
-
-besttotals = sorted(besttotals)
-besttotals.reverse()
-
-print(sum(besttotals[:3]))
+run(data)
