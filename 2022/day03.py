@@ -17,17 +17,13 @@ def Run(path):
   for line in lines:
     c1 = line[0:len(line)//2]
     c2 = line[len(line)//2:]
-    s = set()
-    for c in c1:
-      s.add(c)
-    for c in c2:
-      if c in s:
-        if c.upper() == c:
-          val = ord(c) - ord('A') + 27
-        else:
-          val = ord(c) - ord('a') + 1
-        total += val
-        break
+    s = set(c1)
+    c = s.intersection(set(c2)).pop()
+    if c.upper() == c:
+      val = ord(c) - ord('A') + 27
+    else:
+      val = ord(c) - ord('a') + 1
+    total += val
   
   print(total)
 
