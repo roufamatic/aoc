@@ -13,7 +13,6 @@ def ReadFile(path):
 
 def Run(path, stacks_orig):
   stacks = copy.deepcopy(stacks_orig)
-  print(stacks)
 
   input = ReadFile(path).split('\n\n')[1]
   lines = [v.strip() for v in input.split('\n')]
@@ -28,11 +27,9 @@ def Run(path, stacks_orig):
     for i in range(0, numtomove):
       stacks[tostack].append(stacks[fromstack].pop())
     
-    print(stacks)
-    print(stacks_orig)
-
   output = ''.join([s[len(s) - 1] for s in stacks])
-
+  print(output)
+  
   print('#####')
 
   stacks = copy.deepcopy(stacks_orig)
@@ -49,8 +46,6 @@ def Run(path, stacks_orig):
     for i in range(0, numtomove):
       stacks[tostack].append(tmp.pop())
 
-    print(stacks)
-
   output = ''.join([s[len(s) - 1] for s in stacks])
 
   print(output)
@@ -60,26 +55,9 @@ def Run(path, stacks_orig):
 # [N] [C]    
 # [Z] [M] [P]
 #  1   2   3 
-sss = [['Z','N'], ['M','C','D'], ['P']]
-Run('input05t.txt', sss)
+stacks = [['Z','N'], ['M','C','D'], ['P']]
+Run('input05t.txt', stacks)
 print("--------")
-
-sss = [list(v) for v in [
-  'FTNZMGHJ',
-  'JWV',
-  'HTBJLVG',
-  'LVDCNJPB',
-  'GRPMSWF',
-  'MVNBFCHG',
-  'RMGHD',
-  'DZVMNH',
-  'HFNG']]
-
-for s in sss:
-  s.reverse()
-
-#print(sss)
-
 
 # [F]         [L]     [M]            
 # [T]     [H] [V] [G] [V]            
@@ -91,7 +69,19 @@ for s in sss:
 # [J] [V] [G] [B] [F] [G] [D] [H] [G]
 #  1   2   3   4   5   6   7   8   9 
 
+stacks = [list(v) for v in [
+  'FTNZMGHJ',
+  'JWV',
+  'HTBJLVG',
+  'LVDCNJPB',
+  'GRPMSWF',
+  'MVNBFCHG',
+  'RMGHD',
+  'DZVMNH',
+  'HFNG']]
 
+# Oops, they're backward!
+for s in stacks:
+  s.reverse()
 
-
-#Run('input05.txt', sss)
+Run('input05.txt', stacks)
