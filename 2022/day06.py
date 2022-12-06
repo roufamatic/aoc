@@ -34,6 +34,6 @@ def Run(path):
 
 
 
-Run("input06t.txt")
+Run("input/06t.txt")
 print("--------")
-Run("input06.txt")
+Run("input/06.txt")

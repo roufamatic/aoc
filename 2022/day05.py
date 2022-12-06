@@ -29,7 +29,7 @@ def Run(path, stacks_orig):
     
   output = ''.join([s[len(s) - 1] for s in stacks])
   print(output)
-  
+
   print('#####')
 
   stacks = copy.deepcopy(stacks_orig)
@@ -56,7 +56,7 @@ def Run(path, stacks_orig):
 # [Z] [M] [P]
 #  1   2   3 
 stacks = [['Z','N'], ['M','C','D'], ['P']]
-Run('input05t.txt', stacks)
+Run('input/05t.txt', stacks)
 print("--------")
 
 # [F]         [L]     [M]            
@@ -84,4 +84,4 @@ stacks = [list(v) for v in [
 for s in stacks:
   s.reverse()
 
-Run('input05.txt', stacks)
+Run('input/05.txt', stacks)
