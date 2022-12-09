@@ -28,9 +28,9 @@ def MoveTail(headpos, tailpos):
   if hx != tx and hy != ty:
     if abs(hx - tx) == 2 and abs(hy - ty) == 2:
       if tx < hx:
-        newtx=tx + 1
+        newtx = tx + 1
       else:
-        newtx=tx - 1
+        newtx = tx - 1
       if ty < hy:
         newty = ty + 1
       else:
