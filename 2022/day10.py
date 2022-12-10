@@ -18,8 +18,7 @@ class Device:
     self.strength = 0
     self.row = 0
 
-  def CheckTick(self):
-    
+  def CheckTick(self):    
     # render
     pos = self.tick % 40
     if pos in range(self.x - 1, self.x + 2):
