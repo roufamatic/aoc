@@ -34,7 +34,6 @@ class Device:
     if self.tick in [40, 80, 120, 160, 200]:
       print()
 
-
   def Noop(self):
     self.CheckTick()
 
