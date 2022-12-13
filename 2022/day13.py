@@ -54,7 +54,7 @@ def Eval(pair):
 
 def Run(path):
   input = ReadFile(path)
-  pairs = [(p.split('\n')[0], p.split('\n')[1]) for p in input.split('\n\n')]
+  pairs = [tuple(i.split('\n')) for i in input.split('\n\n')]
   
   total = 0
   for ix in range(1, len(pairs) + 1):
@@ -63,15 +63,16 @@ def Run(path):
       total += ix
   print(total)
 
+  dividers = ['[[2]]', '[[6]]']
   lines = list(filter(lambda i: i != '', input.split('\n')))
-  lines.extend(['[[2]]', '[[6]]'])
+  lines.extend(dividers)
   
   compare = lambda str1, str2: -1 if Eval((str1, str2)) else 1
   lines.sort(key=cmp_to_key(compare))
 
   total = 1
   for ix, line in enumerate(lines):
-    if line in ('[[2]]','[[6]]'):
+    if line in dividers:
       total *= (ix + 1)
   print(total)
 
