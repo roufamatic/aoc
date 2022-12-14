@@ -16,8 +16,6 @@ def nextpos(grainpos, rocks, bottom = -1):
   if y == bottom:
     return None
   desired = (grainpos[0], y)
-  if desired[1] == bottom:
-    return None
   if desired not in rocks:
     return desired
   desired = (grainpos[0] - 1, y)
