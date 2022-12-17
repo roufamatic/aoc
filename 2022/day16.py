@@ -2,6 +2,8 @@ import os
 import re
 from parse import parse
 from copy import deepcopy
+from functools import cache
+from frozendict import frozendict
 
 class Node:
   def __init__(self, valve, flow_rate, tunnels):
@@ -29,16 +31,17 @@ def FindFlowingNeighbors(nodes, node, steps, visited, output):
       if n in visited: continue
       FindFlowingNeighbors(nodes, nodes[n], steps+1, deepcopy(visited), output)
 
+@cache
 def Explore(nodes, node, score, clock, openedValves, visitedSinceOpen, best = 0):
   if clock <= 0: 
     return max(score, best)
 
-  ov = deepcopy(openedValves)
-  vso = deepcopy(visitedSinceOpen)
+  ov = set(openedValves)
+  vso = set(visitedSinceOpen)
   for n in node.neighbors:
     if n in visitedSinceOpen: continue
     vso.add(n)
-    best = max(best, Explore(nodes, nodes[n], score, clock-node.neighbors[n], ov, vso, best))
+    best = max(best, Explore(nodes, nodes[n], score, clock-node.neighbors[n], frozenset(ov), frozenset(vso), best))
 
   if node.valve not in openedValves and node.valve != 'AA':
     ov.add(node.valve)
@@ -51,35 +54,35 @@ def Explore(nodes, node, score, clock, openedValves, visitedSinceOpen, best = 0)
 
     for n in node.neighbors:
       vso.add(n)
-      best = max(best, Explore(nodes, nodes[n], score, clock-node.neighbors[n], ov, vso, best))
+      best = max(best, Explore(nodes, nodes[n], score, clock-node.neighbors[n], frozenset(ov), frozenset(vso), best))
   return best  
 
 def Explore2(nodes, node, score, clock, openedValves, visitedSinceOpen, output):
   if clock <= 0:
     return
   if openedValves:
-    output.add((score, frozenset(openedValves)))
+    output.add((score, openedValves))
 
   for n in node.neighbors:
     if n in visitedSinceOpen: continue
-    vso = deepcopy(visitedSinceOpen)
+    vso = set(visitedSinceOpen)
     vso.add(n)
-    Explore2(nodes, nodes[n], score, clock-node.neighbors[n], deepcopy(openedValves), vso, output)
+    Explore2(nodes, nodes[n], score, clock-node.neighbors[n], openedValves, frozenset(vso), output)
 
   if node.valve not in openedValves and node.valve != 'AA':
-    ov = deepcopy(openedValves)
+    ov = set(openedValves)
     ov.add(node.valve)
     vso = set([node.valve])
     clock -= 1
     score += (node.flow_rate * clock)
 
     if clock <= 0:
-      output.add((score, frozenset(openedValves)))
+      output.add((score, frozenset(ov)))
       return
 
     for n in node.neighbors:
       vso.add(n)
-      Explore2(nodes, nodes[n], score, clock-node.neighbors[n], ov, vso, output)
+      Explore2(nodes, nodes[n], score, clock-node.neighbors[n], frozenset(ov), frozenset(vso), output)
 
 
 def Run(path, elephant = False):
@@ -106,7 +109,7 @@ def Run(path, elephant = False):
   opened = set()
   output = set()
   if elephant:
-    Explore2(flowers, startnode, 0, 26, opened, set(['AA']), output)
+    Explore2(frozendict(flowers), startnode, 0, 26, frozenset(opened), frozenset(['AA']), output)
     print(f'len(output)={len(output)}')
     best = 0
     outputlist = list(sorted(output, reverse=True))
@@ -121,7 +124,7 @@ def Run(path, elephant = False):
         if score+score2 < best/2:
           return
   else:
-    print(Explore(flowers, startnode, 0, 30, opened, set(['AA'])))
+    print(Explore(frozendict(flowers), startnode, 0, 30, frozenset(opened), frozenset(['AA'])))
 
 
 Run("input/16t.txt")
