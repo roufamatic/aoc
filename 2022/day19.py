@@ -10,6 +10,16 @@ from multiprocessing import Pool, Lock, Value
 from multiprocessing.managers import BaseManager
 from datetime import timedelta
 
+# Warning!
+# this is some hideous multiprocessing (MP) code!
+# * first time doing MP in python
+# * no MP-compatible LIFO queue
+# * didn't bother with locking because it massively slowed things down
+# * zero tuning whatsoever
+# * but it finishes part 1 in a couple minutes and part 2 in an hour.
+# also probably some unused code from earlier attempts in here
+# and I have zero intention of cleaning anything up!
+
 def ReadFile(path):
   __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
   path = os.path.join(__location__, path)
