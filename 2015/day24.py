@@ -14,76 +14,53 @@ def ReadFile(path):
 def Run(path):
   packages = [int(i) for i in ReadFile(path).splitlines()]
   maxsum = sum(packages) // 3
-  print(f'maxsum: {maxsum}')
-  lowest_qe = math.inf
-  for front_count in range(1, len(packages) - 1):
-    if lowest_qe < math.inf:
-      return lowest_qe
-    front_combos = filter(lambda f: sum(f) == maxsum, combinations(packages, front_count))
-    for f in front_combos:
-      lpackages = sorted(list(set(packages).difference(set(f))))
-      for left_count in range(1, len(lpackages)):
-        print(f'{front_count}, {left_count}')
-        left_combos = filter(lambda c: sum(c) == maxsum, combinations(packages, left_count))
-        if not any(left_combos):
-          continue
-        lowest_qe = min(lowest_qe, reduce(lambda x, y: x*y, f, 1))
+
+  def prod(l):
+    return reduce(lambda x,y: x*y, l, 1)
+
+  # Goal is to sort things in such a way that we can exit the moment we find a candidate.  
+  for i in range(1, len(packages) + 1):
+    combos = list(filter(lambda p: sum(p) == maxsum, combinations(packages, i)))
+    combos.sort(key=lambda c: (len(c),prod(c)))
+    for c in combos:
+      pkgs2 = set.difference(set(packages), set(c))
+      for j in range(1, len(pkgs2) + 1):
+        pkgs2combos = filter(lambda p: sum(p) == maxsum, combinations(pkgs2, j))
+        for c2 in pkgs2combos:
+          pkgs3 = set.difference(pkgs2, set(c2))
+          if sum(pkgs3) == maxsum:
+            return prod(c)
 
 def Run2(path):
   packages = [int(i) for i in ReadFile(path).splitlines()]
   maxsum = sum(packages) // 4
-  print(f'maxsum: {maxsum}')
-  allcombos = []
-  for i in range(1, len(packages) + 1):
-    allcombos.extend(filter(lambda p: sum(p) == maxsum, combinations(packages, i)))
-    print(f'total size = {len(allcombos)} after combos of size {i} were added.')
-  print(f'found {len(allcombos)} combinations')
+
   def prod(l):
     return reduce(lambda x,y: x*y, l, 1)
-  allcombos.sort(key=lambda c: (len(c),prod(c)))
-  print(f'sorted')
-  for c in allcombos:
-    pkgs2 = set.difference(set(packages), set(c))
-    pkgs2combos = []
-    for i in range(1, len(pkgs2) + 1):
-      pkgs2combos.extend(filter(lambda p: sum(p) == maxsum, combinations(pkgs2, i)))
-    for c2 in pkgs2combos:
-      pkgs3 = set.difference(pkgs2, set(c2))
-      pkgs3combos = []
-      for i in range(1, len(pkgs3) + 1):
-        pkgs3combos.extend(filter(lambda p: sum(p) == maxsum, combinations(pkgs3, i)))
-      for c3 in pkgs3combos:
-        pkgs4 = set.difference(pkgs3, set(c3))
-        if sum(pkgs4) == maxsum:
-          return prod(c)
 
-
-  # lowest_qe = math.inf
-  # for front_count in range(1, len(packages) - 2):
-  #   if lowest_qe < math.inf:
-  #     return lowest_qe
-  #   front_combos = filter(lambda f: sum(f) == maxsum, combinations(packages, front_count))
-  #   for f in front_combos:
-  #     lpackages = sorted(list(set(packages).difference(set(f))))
-  #     for left_count in range(1, len(lpackages)-1):
-  #       left_combos = filter(lambda c: sum(c) == maxsum, combinations(packages, left_count))
-  #       if not any(left_combos):
-  #         continue
-  #       for l in left_combos:
-  #         rpackages = sorted(list(set(lpackages).difference(set(l))))
-  #         for right_count in range(1, len(rpackages)):
-  #           right_combos = filter(lambda c: sum(c) == maxsum, combinations(packages, right_count))
-  #           if not any(right_combos):
-  #             continue
-  #           lowest_qe = min(lowest_qe, reduce(lambda x, y: x*y, f, 1))
+  # Goal is to sort things in such a way that we can exit the moment we find a candidate.  
+  for i in range(1, len(packages) + 1):
+    combos = list(filter(lambda p: sum(p) == maxsum, combinations(packages, i)))
+    combos.sort(key=lambda c: (len(c),prod(c)))
+    for c in combos:
+      pkgs2 = set.difference(set(packages), set(c))
+      for j in range(1, len(pkgs2) + 1):
+        pkgs2combos = filter(lambda p: sum(p) == maxsum, combinations(pkgs2, j))
+        for c2 in pkgs2combos:
+          pkgs3 = set.difference(pkgs2, set(c2))
+          for k in range(1, len(pkgs3) + 1):
+            pkgs3combos = filter(lambda p: sum(p) == maxsum, combinations(pkgs3, k))
+            for c3 in pkgs3combos:
+              pkgs4 = set.difference(pkgs3, set(c3))
+              if sum(pkgs4) == maxsum:
+                return prod(c)
 
 
 if __name__ == '__main__':
-  # x=Run('input/24t.txt')
-  # assert x == 99, x
-  # print("----")
-  # print(Run('input/24.txt'))
+  x=Run('input/24t.txt')
+  assert x == 99, x
+  print(f'part 1: {Run("input/24.txt")}')
+  print("----")
   x=Run2('input/24t.txt')
   assert x == 44, x
-  print("----")
-  print(Run2('input/24.txt'))  
+  print(f'part 2: {Run2("input/24.txt")}')
